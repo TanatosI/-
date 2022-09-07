@@ -12,4 +12,10 @@ export default {
   //  新建 postcssrc.js 文件进行配置
 }
 </script>
-<style></style>
+<style>
+.login{
+  width: 700px;
+  height: 88px;
+  background: skyblue;
+}
+</style>
