@@ -1,21 +1,32 @@
 <template>
   <div>
+    <!-- {{ conust }}
+    <h2>cunust的10倍值{{ bigNum }}</h2>
+    <button @click="SET_CONUST(1)">点击conust++</button> -->
     <router-view></router-view>
   </div>
 </template>
+
 <script>
+// import { mapState, mapGetters, mapMutations } from 'vuex'
+// console.log(mapState(['conust']))
+// // 3.配置rem动起来
 export default {
-  // 一 1.下载并引入 vant :yarn add vant@latest-v2 -S
-  // 一 2. 引入组件和css ,main.js中
-  // 一 3. 下载yarn add amfe-flexible 配置 rem
-  // 一 4. 下载 yarn add postcss-pxtorem 匹配所有px 转化为rem
-  //  新建 postcssrc.js 文件进行配置
+//   methods: {
+//     ...mapMutations(['SET_CONUST'])
+//   },
+//   computed: {
+//     ...mapState(['conust']),
+//     ...mapGetters(['bigNum'])
+  // }
 }
 </script>
-<style>
-.login{
-  width: 700px;
-  height: 88px;
-  background: skyblue;
-}
+
+<style lang="less" scoped>
+// 调试rem
+// .box {
+//     width: 2rem;
+//     height: 2rem;
+//     background-color: gold;
+//   }
 </style>

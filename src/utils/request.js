@@ -1,14 +1,22 @@
-// 下载并引入axios
-// 全局配置 axios
+// 下载axios包 yarn add axios
+// 引入axios
+// 配置 axios
 import axios from 'axios'
-// 这种写法耦合性太强
-// axios.defaults.baseURL = 'http://toutiao.itheima.net'
-// axios.defaults.timeout = 5000
-
-// const reqyest = axios.create({}) 用此方法克隆 axios
-const reqyest = axios.create({
-  timeout: 5000,
-  baseURL: 'http://toutiao.itheima.net'
+import store from '@/store'
+// 克隆一个axios
+const request = axios.create({
+  baseURL: 'http://toutiao.itheima.net',
+  timeout: 5000
 })
-
-export default reqyest
+// 请求拦截添加headers
+request.interceptors.request.use(function (config) {
+  console.log(config)
+  const {
+    getters: { isLogin },
+    state: { tokenObj }
+  } = store
+  if (isLogin) config.headers.Authorization = `Bearer ${tokenObj.token}`
+  return config
+})
+// 暴露克隆的axios
+export default request

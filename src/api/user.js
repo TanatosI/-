@@ -1,32 +1,37 @@
-// user.js 划分是根后端接口文档
+// 根据后端接口划分接口文档
 import request from '@/utils/request'
-
 /**
  *
- * @param {String} mobile
- * @param {Number} code
- * @returns Promise
+ * @param {String} mobile  手机号
+ * @param {Number} code  验证码
+ * @returns params
  */
-
-// 登录页面
-export const lohin = (mobile, code) => {
+export const loginApi = (mobile, code) => {
   return request({
-    url: '/v1_0/authorizations',
     method: 'POST',
+    url: '/v1_0/authorizations',
     data: {
       mobile,
       code
     }
   })
 }
-
 /**
- *
- * @param {String} mobile 手机号
- * @returns Promise
+ * 验证码接口
+ * @param {手机号} mobile 手机号
+ * @returns params
  */
-export const sendCodeAPI = (mobile) => {
+export const getSendCodeApi = (mobile) => {
   return request({
-    url: `/v1_0/sms/cpdes/${mobile}`
+    url: `/v1_0/sms/codes/${mobile}`
+  })
+}
+/**
+ * 获取用户信息
+ * @returns params
+ */
+export const getUserInfo = () => {
+  return request({
+    url: '/v1_0/user/'
   })
 }

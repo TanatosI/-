@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- {{$store.state.conust}} -->
     <!-- 头部导航 -->
     <van-nav-bar class="login-bar" title="登录" />
     <!-- form表单 -->
@@ -25,14 +26,14 @@
         </template>
         <template #button>
           <van-button
+            v-if="isShowCodeBtn"
             block
             type="default"
             size="small"
             class="codeBth"
             round
             native-type="button"
-            v-if="isShowCodeBtn"
-            @click="sendCode"
+            @click="codeSend"
             >获取验证码</van-button
           >
           <van-count-down
@@ -49,10 +50,11 @@
     </van-form>
   </div>
 </template>
-<script>
-import { mobileRules, codeRules } from './rule'
-import { loginApi, sendCodeAPI } from '@/api/user'
 
+<script>
+import { mobileRules, codeRules } from './rules'
+import { loginApi, getSendCodeApi } from '@/api/user'
+// 引入vuex的mapMutations来储存token值  vuex是响应式
 import { mapMutations } from 'vuex'
 export default {
   data() {
@@ -66,14 +68,24 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_TOKEN']),
+    // loading等待函数
+    loading() {
+      this.$toast.loading({
+        message: '加载中...',
+        duration: 0
+      })
+    },
     // 只有校验成功触发
     async onSubmit() {
+      // 调用等待函数
+      this.loading()
+      // 请求返回成功时的函数
       try {
         const { data } = await loginApi(this.mobile, this.code)
-        this.SET_TOKEN(data.data)
-        console.log(data)
-        this.$router.push('/profile')
         this.$toast.success('登陆成功')
+        this.$router.push('/profile')
+        this.SET_TOKEN(data.data)
+        // 请求失败函数
       } catch (error) {
         if (error.response && error.response.status === 400) {
           this.$toast.fail(error.response.data.message)
@@ -83,29 +95,24 @@ export default {
         }
       }
     },
-    loading() {
-      this.$toast.loading({
-        message: '加载中...',
-        forbidClick: true,
-        duration: 0
-      })
-    },
-    async sendCode() {
-      // 1.发送请求
+    async codeSend() {
+      // 点击按钮校验mobile规则
       await this.$refs.form.validate('mobile')
-
       this.loading()
       try {
-        await sendCodeAPI(this.mobile)
-        this.$toast.success('发送验证码成功')
+        await getSendCodeApi(this.mobile)
         this.isShowCodeBtn = false
+        this.$toast.success('发送验证成功')
       } catch (error) {
         if (
+          // error.response.status后端返回的状态
           error.response &&
           (error.response.status === 429 || error.response.status === 404)
         ) {
+          // loading等待不到数据弹窗
           this.$toast.fail(error.response.data.message)
         } else {
+          // 清除等待
           this.$toast.clear()
           throw error
         }
