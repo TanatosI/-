@@ -14,13 +14,14 @@ export default new Vuex.Store({
       // 修改存储地方
       // storage: window.Cookie,
       // 设置存储的内容
-      reducer({ tokenObj }) {
-        return { tokenObj }
+      reducer({ tokenObj, myChannels }) {
+        return { tokenObj, myChannels }
       }
     })
   ],
   state: {
-    tokenObj: {}
+    tokenObj: {},
+    myChannels: []
   },
   getters: {
     isLogin(state) {
@@ -30,6 +31,12 @@ export default new Vuex.Store({
   mutations: {
     SET_TOKEN(state, tokenData) {
       state.tokenObj = tokenData
+    },
+    /**
+     * @param {Array} channels 删除或添加后的最新的channels
+     */
+    SET_MY_CHANNELS(state, channels) {
+      state.myChannels = channels
     }
   }
 })

@@ -28,7 +28,7 @@
     <!-- 推荐频道 -->
     <!-- 已完成 -->
     <!-- 标题 -->
-    <van-cell title="我的频道"> </van-cell>
+    <van-cell title="推荐频道"> </van-cell>
     <!-- 频道 -->
     <div class="recommend-pannel">
       <van-grid gutter="10" :border="false">
@@ -37,6 +37,7 @@
           :key="item.id"
           :text="item.name"
           icon="plus"
+          @click="$emit('add-channel', item)"
         />
       </van-grid>
     </div>
@@ -71,9 +72,10 @@ export default {
       const { data } = await getAllChannelsAPI()
       this.allChannels = data.data.channels
     },
-    handleMyChannel({ name }, index) {
+    handleMyChannel({ name, id }, index) {
       if (this.isEdit && name !== '推荐') {
         console.log('删除')
+        this.$emit('del-channel', id)
       } else {
         // 关闭弹窗并切换频道
         this.$emit('change-active', index)
