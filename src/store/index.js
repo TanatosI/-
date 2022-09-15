@@ -14,14 +14,15 @@ export default new Vuex.Store({
       // 修改存储地方
       // storage: window.Cookie,
       // 设置存储的内容
-      reducer({ tokenObj, myChannels }) {
-        return { tokenObj, myChannels }
+      reducer({ tokenObj, myChannels, histores }) {
+        return { tokenObj, myChannels, histores }
       }
     })
   ],
   state: {
     tokenObj: {},
-    myChannels: []
+    myChannels: [],
+    histores: []
   },
   getters: {
     isLogin(state) {
@@ -37,6 +38,14 @@ export default new Vuex.Store({
      */
     SET_MY_CHANNELS(state, channels) {
       state.myChannels = channels
+    },
+
+    /**
+     * 历史记录
+     * @param {*} histores 增删以后新的搜索历史
+     */
+    SET_HISTORIES(state, histores) {
+      state.histores = histores
     }
   }
 })
